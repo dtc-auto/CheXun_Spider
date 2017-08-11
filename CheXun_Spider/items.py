@@ -34,7 +34,7 @@ class ChexunSpiderCompaniesItem(scrapy.Item):
     last_update_time = scrapy.Field()
 
 class ChexunSpiderConfiguration(scrapy.Item):
-    config_id = scrapy.Field()
+    serie_id = scrapy.Field()
     spec_id = scrapy.Field()
     para_name = scrapy.Field()
     para_value = scrapy.Field()

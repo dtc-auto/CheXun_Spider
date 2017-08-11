@@ -60,7 +60,7 @@ class UrlSpiderSpider(scrapy.Spider):
     def get_configuration(self, dit, key):
         item = ChexunSpiderConfiguration()
         dit_result = dit[u'result']
-        seriesid = dit_result[u'seriesid']  # 得到series_id
+        series_id = dit_result[u'seriesid']  # 得到series_id
         dit_typeitems = dit_result[key]
         for paramitems in dit_typeitems:
             if key == u'paramtypeitems':
@@ -75,7 +75,7 @@ class UrlSpiderSpider(scrapy.Spider):
                         spec_id = items[u'specid']  # 得到 spec_id
                         para_value = items[u'value']  # 得到 para_value
                         #  给item赋值并返回
-                        item['config_id'] = seriesid
+                        item['series_id'] = series_id
                         item['spec_id'] = spec_id
                         item['para_name'] = para_name
                         item['para_value'] = para_value
@@ -83,3 +83,4 @@ class UrlSpiderSpider(scrapy.Spider):
                         key = str(item['spec_id']).decode('gb2312')
                         if key not in self.sql_spec_id:
                             yield item
+
