@@ -35,7 +35,7 @@ class UrlSpiderSpider(scrapy.Spider):
     name = "Configuration_Spider"
 
     def parse(self, response):
-
+        save(response.body)
         pattern_js = re.compile("var paraJson = (.+?);")
         js_list = re.findall(pattern_js, response.body)
         js_item = js_list[0]
