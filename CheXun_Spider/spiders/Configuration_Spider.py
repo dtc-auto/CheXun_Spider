@@ -6,7 +6,7 @@ import pymssql
 import pandas as pd
 from CheXun_Spider.items import ChexunSpiderConfiguration
 from CheXun_Spider.settings import *
-#from CheXun_Spider.tmp.read_csv import start_urls
+from CheXun_Spider.Save_Source import Save_Source
 class UrlSpiderSpider(scrapy.Spider):
 
     # 提取star_url, 提取series_id为做增量
@@ -35,7 +35,10 @@ class UrlSpiderSpider(scrapy.Spider):
     name = "Configuration_Spider"
 
     def parse(self, response):
-        save(response.body)
+        url = response.url
+        file_name = re.findall(r"com\/(.+?)\/data",url)[0]
+        if SAVE_SOURCE_DATA == 1:
+            Save_Source(response.body, file_name)
         pattern_js = re.compile("var paraJson = (.+?);")
         js_list = re.findall(pattern_js, response.body)
         js_item = js_list[0]

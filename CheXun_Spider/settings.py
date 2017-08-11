@@ -11,8 +11,6 @@
 
 BOT_NAME = 'CheXun_Spider'
 
-STAR_SPIDER_NAME = 'Companies_Spider'  # 设置启动Spider
-
 SPIDER_MODULES = ['CheXun_Spider.spiders']
 NEWSPIDER_MODULE = 'CheXun_Spider.spiders'
 
@@ -26,16 +24,24 @@ DATABASE_HOST = '172.16.0.117'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36'
-FEED_FORMAT = 'CSV'
-#FEED_URI = 'CheXun_Configuration.csv'  # 定位输出文件名
 
-INTO_SQL = 1  # 设置是否启动sql写入
+
+STAR_SPIDER_NAME = 'Configuration_Spider'  # 设置启动Spider
+
+FEED_FORMAT = 'CSV'
+#FEED_URI = 'CheXun_Configuration.csv'  # 定位输出文件名  将表输出为.CSV
+
+INTO_SQL = 0  # 设置是否启动sql写入 ‘1’ 为启动
+
+SAVE_SOURCE_DATA = 0  # 设置是否启动网页源代码写入 ‘1’ 为启动
+
+FILE = 'C:\Users\dell\Desktop'  # 设置文件存储路径
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-CONCURRENT_REQUESTS = 32
+CONCURRENT_REQUESTS = 32  # 线程
 
 # Configure a delay for requests for the same website (default: 0)
 # See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay
