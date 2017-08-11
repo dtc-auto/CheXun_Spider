@@ -2,13 +2,10 @@
 import json
 import pymssql
 import re
-
 import pandas as pd
 import scrapy
-
-from CheXun_Spider.items import ChexunSpiderConfiguration
+from CheXun_Spider.items import ChexunSpiderColumn
 from CheXun_Spider.settings import *
-from CheXun_Spider.utils.Save_Source import Save_Source
 
 
 class UrlSpiderSpider(scrapy.Spider):
@@ -33,17 +30,13 @@ class UrlSpiderSpider(scrapy.Spider):
         return sql_list
 
     sql_url = """SELECT SERIE_URL FROM [stg].[CONFIG_SERIES]"""
-    sql_id = """SELECT SPEC_ID FROM [stg].[CONFIGURATION_DETAILS] GROUP BY SPEC_ID"""
-    sql_spec_id = get_list(sql_id)
+    sql_name = """SELECT PARA_NAME FROM [stg].[CONFIG_ITEM] 
+                GROUP BY PARA_NAME"""
+    name_list = get_list(sql_name)
     start_urls = get_list(sql_url)
-    name = "Configuration_Spider"
+    name = "Column_Spider"
 
     def parse(self, response):
-        # 将网页源代码存入.txt
-        url = response.url
-        file_name = re.findall(r"com\/(.+?)\/data",url)[0]
-        if SAVE_SOURCE_DATA == 1:
-            Save_Source(response.body, file_name)
         pattern_js = re.compile("var paraJson = (.+?);")
         js_list = re.findall(pattern_js, response.body)
         js_item = js_list[0]
@@ -66,11 +59,12 @@ class UrlSpiderSpider(scrapy.Spider):
                 yield each
 
     def get_configuration(self, dit, key):
-        item = ChexunSpiderConfiguration()
+        item = ChexunSpiderColumn()
         dit_result = dit[u'result']
-        series_id = dit_result[u'seriesid']  # 得到series_id
         dit_typeitems = dit_result[key]
         for paramitems in dit_typeitems:
+            type_name = paramitems['name']
+            type_id = paramitems['typeId']
             if key == u'paramtypeitems':
                 list_paramitems = paramitems[u'paramitems']  # 第二段为u'configitems'  第一段为[u'paramitems']
             else:
@@ -78,17 +72,32 @@ class UrlSpiderSpider(scrapy.Spider):
             for aim_dit in list_paramitems:
                 if aim_dit[u'name']:
                     para_name = aim_dit[u'name']  # 得到 para_name
-                    list_valueitems = aim_dit[u'valueitems']
-                    for items in list_valueitems:
-                        spec_id = items[u'specid']  # 得到 spec_id
-                        para_value = items[u'value']  # 得到 para_value
-                        #  给item赋值并返回
-                        item['series_id'] = series_id
-                        item['spec_id'] = spec_id
-                        item['para_name'] = para_name
-                        item['para_value'] = para_value
-                        # 增量爬取 精确到车型
-                        key = str(item['spec_id']).decode('gb2312')
-                        if key not in self.sql_spec_id:
-                            yield item
+                    para_id = aim_dit[u'id']
+                    #  给item赋值并返回
+                    item['para_id'] = para_id
+                    item['para_name'] = para_name
+                    item['type_name'] = type_name
+                    item['type_id'] = type_id
+                    key_ = item['para_name']
+
+                    # 增量爬取 精确到车型
+
+                    server = DATABASE_SERVER_NAME
+                    user = DATABASE_USER_NAME
+                    password = DATABASE_USER_PASSWORD
+                    database = DATABASE_NAME
+                    host = DATABASE_HOST
+                    conn = pymssql.connect(user=user,
+                                           password=password,
+                                           host=host,
+                                           database=database)
+                    list_df = pd.read_sql_query(self.sql_name, conn)
+                    sql_url = list_df.values.tolist()
+                    sql_list = []
+                    for id in sql_url:
+                        sql_list.append(id[0])
+                    self.name_list = sql_list
+                    if key_ not in self.name_list:
+                        yield item
+
 

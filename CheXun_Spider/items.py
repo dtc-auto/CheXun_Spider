@@ -40,3 +40,9 @@ class ChexunSpiderConfiguration(scrapy.Item):
     para_value = scrapy.Field()
     create_time = scrapy.Field()
     last_update_time = scrapy.Field()
+
+class ChexunSpiderColumn(scrapy.Item):
+    para_id = scrapy.Field()
+    para_name = scrapy.Field()
+    type_name = scrapy.Field()
+    type_id = scrapy.Field()

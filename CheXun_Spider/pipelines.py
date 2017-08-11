@@ -42,6 +42,8 @@ class ChexunSpiderPipeline(object):
                 self.Companies_Spider_into(item, spider)
             if self.star_spider_name == 'Configuration_Spider':
                 self.Configuration_Spider_into(item, spider)
+            if self.star_spider_name == 'Column_Spider':
+                self.Column_Spider_into(item, spider)
         return item
 
 
@@ -106,7 +108,6 @@ class ChexunSpiderPipeline(object):
 
             self.conn.autocommit(False)
             self.conn.commit()
-
         #self.conn.close()
 
 
@@ -128,3 +129,25 @@ class ChexunSpiderPipeline(object):
             self.conn.autocommit(False)
             self.conn.commit()
         #self.conn.close()
+
+    def Column_Spider_into(self, item, spider):
+            cur = self.conn.cursor()
+            self.conn.autocommit(True)
+            para_id = item['para_id']
+            para_name = item['para_name']
+            type_name = item['type_name']
+            type_id = item['type_id']
+            create_time=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            last_update_time=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+            cur.execute("""INSERT INTO [BDCI_CHEXUN].[stg].[CONFIG_ITEM]
+                            (para_id, para_name, type_name, type_id)
+                        VALUES (%s,%s,%s,%s)"""
+                        , (para_id, para_name, type_name, type_id))
+
+            self.conn.autocommit(False)
+            self.conn.commit()
+        #self.conn.close()
+
+
+
