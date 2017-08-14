@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
 import pymssql
+import sys
 
 # Define your item pipelines here
 #
@@ -70,6 +71,8 @@ class ChexunSpiderPipeline(object):
 
             self.conn.autocommit(False)
             self.conn.commit()
+
+
         #self.conn.close()
 
 
@@ -114,7 +117,7 @@ class ChexunSpiderPipeline(object):
     def Configuration_Spider_into(self, item, spider):
             cur = self.conn.cursor()
             self.conn.autocommit(True)
-            config_id=item['serie_id'],
+            series_id=item['series_id'],
             spec_id=item['spec_id'],
             para_name=item['para_name'],
             para_value=item['para_value'],
@@ -122,9 +125,9 @@ class ChexunSpiderPipeline(object):
             last_update_time=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
             cur.execute("""INSERT INTO BDCI_CHEXUN.stg.CONFIGURATION_DETAILS
-                            (serie_id, spec_id, para_name, para_value, create_time, last_update_time)
+                            (series_id, spec_id, para_name, para_value, create_time, last_update_time)
                         VALUES (%s,%s,%s,%s,%s,%s)"""
-                        , (config_id, spec_id, para_name, para_value, create_time, last_update_time))
+                        , (series_id, spec_id, para_name, para_value, create_time, last_update_time))
 
             self.conn.autocommit(False)
             self.conn.commit()

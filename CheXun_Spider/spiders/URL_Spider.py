@@ -52,6 +52,10 @@ class UrlSpiderSpider(scrapy.Spider):
                         # l.append(dit[key])
                         if key.encode("utf8") == 'seriesId':
                             item['serie_id'] = dit[key]
+                        if key.encode("utf8") == 'companyId':
+                            item['company_id'] = dit[key]
+                        if key.encode("utf8") == 'brandId':
+                            item['brand_id'] = dit[key]
                         if key.encode("utf8") == 'seriesName':
                             item['serie_name_cn'] = dit[key]
                         if key.encode("utf8") == 'englishName':
@@ -59,10 +63,8 @@ class UrlSpiderSpider(scrapy.Spider):
                             en_name = dit[key].encode("utf8")
                             ser_url = "http://auto.chexun.com/%s/data" % (en_name)
                             item['serie_url'] = ser_url
-                        if key.encode("utf8") == 'brandId':
-                            item['brand_id'] = dit[key]
-                        if key.encode("utf8") == 'companyId':
-                            item['company_id'] = dit[key]
+
+
                         # 增量判断 表中是否有重复数据（表中serie_id唯一）
                             key = str(item['serie_id']).decode('gb2312')
                             if key not in self.sql_id_list:

@@ -26,12 +26,12 @@ DATABASE_HOST = '172.16.0.117'
 USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36'
 
 
-STAR_SPIDER_NAME = 'Column_Spider'  # 设置启动Spider
+STAR_SPIDER_NAME = 'Configuration_Spider'  # 设置启动Spider
 
 FEED_FORMAT = 'CSV'
 #FEED_URI = 'CheXun_Configuration.csv'  # 定位输出文件名  将表输出为.CSV
 
-INTO_SQL = 1  # 设置是否启动sql写入 ‘1’ 为启动
+INTO_SQL = 0  # 设置是否启动sql写入 ‘1’ 为启动
 
 SAVE_SOURCE_DATA = 0  # 设置是否启动网页源代码写入.txt ‘1’ 为启动（仅当Configuration_Spider启动时生效）
 
