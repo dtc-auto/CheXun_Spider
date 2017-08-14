@@ -88,7 +88,7 @@ class UrlSpiderSpider(scrapy.Spider):
                         item['para_name'] = para_name
                         item['para_value'] = para_value
                         # 增量爬取 精确到车型
-                        key = str(item['spec_id']).decode('gb2312')
-                        if key not in self.sql_spec_id:
+                        key_ = str(item['spec_id']).decode('gb2312')
+                        if key_ not in self.sql_spec_id:
                             yield item
 
