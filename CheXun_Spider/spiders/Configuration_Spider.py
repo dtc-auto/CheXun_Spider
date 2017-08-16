@@ -39,7 +39,11 @@ class UrlSpiderSpider(scrapy.Spider):
     name = "Configuration_Spider"
 
     def parse(self, response):
-        self.resp_body = response.body
+        # 将网页源代码存入.txt
+        url = response.url
+        file_name = re.findall(r"com\/(.+?)\/data",url)[0]
+        if SAVE_SOURCE_DATA == 1:
+            Save_Source(response.body, file_name)
         pattern_js = re.compile("var paraJson = (.+?);")
         js_list = re.findall(pattern_js, response.body)
         js_item = js_list[0]
@@ -83,12 +87,6 @@ class UrlSpiderSpider(scrapy.Spider):
                         item['spec_id'] = spec_id
                         item['para_name'] = para_name
                         item['para_value'] = para_value
-
-                        # 将网页源代码存入.txt
-                        file_name = item['spec_id']
-                        if SAVE_SOURCE_DATA == 1:
-                            Save_Source(self.resp_body, file_name)
-
                         # 增量爬取 精确到车型
                         key_ = str(item['spec_id']).decode('gb2312')
                         if key_ not in self.sql_spec_id:
