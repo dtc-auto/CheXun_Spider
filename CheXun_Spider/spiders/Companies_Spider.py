@@ -23,7 +23,7 @@ class UrlSpiderSpider(scrapy.Spider):
                                     host=self.host,
                                     database=self.database)
 
-        sql = """SELECT COMPANY_ID FROM [stg].[CONFIG_COMPANIES]"""
+        sql = """SELECT COMPANY_ID FROM [stg].[CONFIG_COMPANIES_2018_01_30]"""
         url_list_df = pd.read_sql_query(sql, self.conn)
         sql_id = url_list_df.values.tolist()
         self.sql_id_list = []
@@ -31,7 +31,7 @@ class UrlSpiderSpider(scrapy.Spider):
             self.sql_id_list.append(id[0])
 
         pattern_js = re.compile("\"companyMap\":(.+?)\,\"seriesMap\"")
-        js_list = re.findall(pattern_js, response.body)
+        js_list = re.findall(pattern_js, response.body.decode('utf-8'))
         js_item = js_list[0]
         str_json = json.loads(js_item)
         js_item = dict(str_json)
@@ -46,16 +46,12 @@ class UrlSpiderSpider(scrapy.Spider):
         for x in d.keys():
             if type(d[x]) == list:
                 for dit in d[x]:
-                    for key in dit:
-                        # l.append(dit[key])
-                        if key.encode("utf8") == 'englishName':
-                            item['company_name_en'] = dit[key]
-                        if key.encode("utf8") == 'companyName':
-                            item['company_name_cn'] = dit[key]
-                        if key.encode("utf8") == 'companyId':
-                            item['company_id'] = dit[key]
-                            # 增量判断 表中是否有重复数据 （表中serie_id唯一）
-                            key = str(item['company_id']).decode('gb2312')
-                            if key not in self.sql_id_list:
-                                yield item
+                    item['company_id'] = str(dit['companyId'])
+                    item['company_name_cn'] = dit['companyName']
+                    item['company_name_en'] = dit['englishName']
+                    item['brand_id'] = x
+                    # 增量判断 表中是否有重复数据 （表中serie_id唯一）
+                    key = str(item['company_id'])
+                    if key not in self.sql_id_list:
+                        yield item
 

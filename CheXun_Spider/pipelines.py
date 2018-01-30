@@ -64,7 +64,7 @@ class ChexunSpiderPipeline(object):
             create_time=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             last_update_time=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-            cur.execute("""INSERT INTO BDCI_CHEXUN.stg.CONFIG_SERIES
+            cur.execute("""INSERT INTO BDCI_CHEXUN.stg.CONFIG_SERIES_NEW
                             (serie_id, serie_name_cn, serie_name_en, serie_url, brand_id, company_id, create_time, last_update_time)
                         VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"""
                         , (serie_id, serie_name_cn, serie_name_en, serie_url, brand_id, company_id, create_time, last_update_time))
@@ -85,7 +85,7 @@ class ChexunSpiderPipeline(object):
             create_time=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             last_update_time=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-            cur.execute("""INSERT INTO BDCI_CHEXUN.stg.CONFIG_BRANDS
+            cur.execute("""INSERT INTO BDCI_CHEXUN.stg.CONFIG_BRANDS_2018_01_30
                             (brand_id, brand_name_cn, brand_name_en, create_time, last_update_time)
                         VALUES (%s,%s,%s,%s,%s)"""
                         , (brand_id, brand_name_cn, brand_name_en, create_time, last_update_time))
@@ -101,13 +101,14 @@ class ChexunSpiderPipeline(object):
             company_id=item['company_id'],
             company_name_cn=item['company_name_cn'],
             company_name_en=item['company_name_en'],
+            brand_id = item['brand_id']
             create_time=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             last_update_time=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-            cur.execute("""INSERT INTO BDCI_CHEXUN.stg.CONFIG_COMPANIES
-                            (company_id, company_name_cn, company_name_en, create_time, last_update_time)
-                        VALUES (%s,%s,%s,%s,%s)"""
-                        , (company_id, company_name_cn, company_name_en, create_time, last_update_time))
+            cur.execute("""INSERT INTO BDCI_CHEXUN.stg.CONFIG_COMPANIES_2018_01_30
+                            (company_id, company_name_cn, company_name_en, create_time, last_update_time, brand_id)
+                        VALUES (%s,%s,%s,%s,%s,%s)"""
+                        , (company_id, company_name_cn, company_name_en, create_time, last_update_time, brand_id))
 
             self.conn.autocommit(False)
             self.conn.commit()
@@ -124,8 +125,8 @@ class ChexunSpiderPipeline(object):
             create_time=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             last_update_time=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-            cur.execute("""INSERT INTO BDCI_CHEXUN.stg.CONFIGURATION_DETAILS
-                            (series_id, spec_id, para_name, para_value, create_time, last_update_time)
+            cur.execute("""INSERT INTO BDCI_CHEXUN.stg.CONFIGURATION_DETAILS_2018_01_25
+                            (serie_id, spec_id, para_name, para_value, create_time, last_update_time)
                         VALUES (%s,%s,%s,%s,%s,%s)"""
                         , (series_id, spec_id, para_name, para_value, create_time, last_update_time))
 
@@ -143,7 +144,7 @@ class ChexunSpiderPipeline(object):
             create_time=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             last_update_time=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-            cur.execute("""INSERT INTO [BDCI_CHEXUN].[stg].[CONFIG_ITEM]
+            cur.execute("""INSERT INTO [BDCI_CHEXUN].[stg].[CONFIG_ITEM_NEW]
                             (para_id, para_name, type_name, type_id)
                         VALUES (%s,%s,%s,%s)"""
                         , (para_id, para_name, type_name, type_id))

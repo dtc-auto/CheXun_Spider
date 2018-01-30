@@ -20,9 +20,9 @@ class ChexunSpiderItem(scrapy.Item):
     last_update_time = scrapy.Field()
 
 class ChexunSpiderBrandItem(scrapy.Item):
-    brand_id = scrapy.Field()
-    brand_name_cn = scrapy.Field()
     brand_name_en = scrapy.Field()
+    brand_name_cn = scrapy.Field()
+    brand_id = scrapy.Field()
     create_time = scrapy.Field()
     last_update_time = scrapy.Field()
 
@@ -30,6 +30,7 @@ class ChexunSpiderCompaniesItem(scrapy.Item):
     company_id = scrapy.Field()
     company_name_cn = scrapy.Field()
     company_name_en = scrapy.Field()
+    brand_id = scrapy.Field()
     create_time = scrapy.Field()
     last_update_time = scrapy.Field()
 

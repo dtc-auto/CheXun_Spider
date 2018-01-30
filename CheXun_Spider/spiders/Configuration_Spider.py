@@ -33,7 +33,7 @@ class UrlSpiderSpider(scrapy.Spider):
         return sql_list
 
     sql_url = """SELECT SERIE_URL FROM [stg].[CONFIG_SERIES]"""
-    sql_id = """SELECT SPEC_ID FROM [stg].[CONFIGURATION_DETAILS] GROUP BY SPEC_ID"""
+    sql_id = """SELECT SPEC_ID FROM [stg].[CONFIGURATION_DETAILS_2018_01_25] GROUP BY SPEC_ID"""
     sql_spec_id = get_list(sql_id)
     start_urls = get_list(sql_url)
     name = "Configuration_Spider"
@@ -45,7 +45,7 @@ class UrlSpiderSpider(scrapy.Spider):
         if SAVE_SOURCE_DATA == 1:
             Save_Source(response.body, file_name)
         pattern_js = re.compile("var paraJson = (.+?);")
-        js_list = re.findall(pattern_js, response.body)
+        js_list = re.findall(pattern_js, response.body.decode('utf-8'))
         js_item = js_list[0]
         str_json = json.loads(js_item)
         js_list = list(str_json)
@@ -88,7 +88,7 @@ class UrlSpiderSpider(scrapy.Spider):
                         item['para_name'] = para_name
                         item['para_value'] = para_value
                         # 增量爬取 精确到车型
-                        key_ = str(item['spec_id']).decode('gb2312')
+                        key_ = str(item['spec_id'])
                         if key_ not in self.sql_spec_id:
                             yield item
 
