@@ -64,7 +64,7 @@ class ChexunSpiderPipeline(object):
             create_time=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             last_update_time=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-            cur.execute("""INSERT INTO BDCI_CHEXUN.stg.CONFIG_SERIES_NEW
+            cur.execute("""INSERT INTO BDCI_CHEXUN.stg.CONFIG_SERIES_2018_01_30
                             (serie_id, serie_name_cn, serie_name_en, serie_url, brand_id, company_id, create_time, last_update_time)
                         VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"""
                         , (serie_id, serie_name_cn, serie_name_en, serie_url, brand_id, company_id, create_time, last_update_time))
@@ -144,7 +144,7 @@ class ChexunSpiderPipeline(object):
             create_time=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             last_update_time=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-            cur.execute("""INSERT INTO [BDCI_CHEXUN].[stg].[CONFIG_ITEM_NEW]
+            cur.execute("""INSERT INTO [BDCI_CHEXUN].[stg].[CONFIG_SERIES_2018_01_30]
                             (para_id, para_name, type_name, type_id)
                         VALUES (%s,%s,%s,%s)"""
                         , (para_id, para_name, type_name, type_id))
