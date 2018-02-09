@@ -4,8 +4,8 @@ import re
 import json
 import pymssql
 import pandas as pd
-from CheXun_Spider.settings import *
-from CheXun_Spider.items import ChexunSpiderCompaniesItem
+from settings import *
+from items import ChexunSpiderCompaniesItem
 class UrlSpiderSpider(scrapy.Spider):
 
     start_urls = ['http://auto.chexun.com/search-a0-b0-c0-d0-e0-f0-g0-h0-i0:0.html']

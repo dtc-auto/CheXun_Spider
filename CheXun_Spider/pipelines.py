@@ -79,11 +79,11 @@ class ChexunSpiderPipeline(object):
     def Brand_Spider_into(self, item, spider):
             cur = self.conn.cursor()
             self.conn.autocommit(True)
-            brand_id=item['brand_id'],
-            brand_name_cn=item['brand_name_cn'],
-            brand_name_en=item['brand_name_en'],
-            create_time=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            last_update_time=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            brand_id = item['brand_id'],
+            brand_name_cn = item['brand_name_cn'],
+            brand_name_en = item['brand_name_en'],
+            create_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            last_update_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
             cur.execute("""INSERT INTO BDCI_CHEXUN.stg.CONFIG_BRANDS_2018_01_30
                             (brand_id, brand_name_cn, brand_name_en, create_time, last_update_time)

@@ -6,9 +6,9 @@ import re
 import pandas as pd
 import scrapy
 
-from CheXun_Spider.items import ChexunSpiderConfiguration
-from CheXun_Spider.settings import *
-from CheXun_Spider.utils.Save_Source import Save_Source
+from items import ChexunSpiderConfiguration
+from settings import *
+from utils.Save_Source import Save_Source
 
 
 class UrlSpiderSpider(scrapy.Spider):

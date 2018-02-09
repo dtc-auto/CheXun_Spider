@@ -17,8 +17,8 @@ NEWSPIDER_MODULE = 'CheXun_Spider.spiders'
 CONNECTION_STRING_CHEXUN = "mssql+pymssql://spider:ASdf1234@sqldev02\sql/BDCI_CHEXUN"
 
 DATABASE_SERVER_NAME = "sqldev02\sql"
-DATABASE_USER_NAME = "spider"
-DATABASE_USER_PASSWORD = "ASdf1234"
+DATABASE_USER_NAME = "Spider"
+DATABASE_USER_PASSWORD = "i8ae8y.gejianyu"
 DATABASE_NAME = 'BDCI_CHEXUN'
 DATABASE_HOST = '172.16.0.117'
 
@@ -26,7 +26,7 @@ DATABASE_HOST = '172.16.0.117'
 USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36'
 
 
-STAR_SPIDER_NAME = 'Configuration_Spider'  # 设置启动Spider
+STAR_SPIDER_NAME = 'Brand_Spider'  # 设置启动Spider
 
 FEED_FORMAT = 'CSV'
 #FEED_URI = 'CheXun_Configuration.csv'  # 定位输出文件名  将表输出为.CSV
@@ -34,8 +34,7 @@ FEED_FORMAT = 'CSV'
 INTO_SQL = 0  # 设置是否启动sql写入 ‘1’ 为启动
 
 SAVE_SOURCE_DATA = 0  # 设置是否启动网页源代码写入.txt ‘1’ 为启动（仅当Configuration_Spider启动时生效）
-
-FILE = 'C:\Users\dell\Desktop'  # 设置文件存储路径
+FILE = 'C:'  # 设置文件存储路径
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
