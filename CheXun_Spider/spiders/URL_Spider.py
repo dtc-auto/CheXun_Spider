@@ -24,7 +24,7 @@ class UrlSpiderSpider(scrapy.Spider):
                                     host=self.host,
                                     database=self.database)
 
-        sql = """SELECT SERIE_ID FROM [stg].[CONFIG_SERIES]"""
+        sql = """SELECT SERIE_ID FROM [stg].[CONFIG_SERIES_2018_01_30]"""
         url_list_df = pd.read_sql_query(sql, self.conn)
         sql_id = url_list_df.values.tolist()
         self.sql_id_list = []
@@ -32,7 +32,7 @@ class UrlSpiderSpider(scrapy.Spider):
             self.sql_id_list.append(id[0])
 
         pattern_js = re.compile("\"seriesMap\":(.+?)};")
-        js_list = re.findall(pattern_js, response.body)
+        js_list = re.findall(pattern_js, response.body.decode('utf-8'))
         js_item = js_list[0]
         str_json = json.loads(js_item)
         js_item = dict(str_json)
@@ -48,46 +48,26 @@ class UrlSpiderSpider(scrapy.Spider):
                 self.dict_flatlist(d[x])
             if type(d[x]) == list:
                 for dit in d[x]:
-                    for key in dit:
-                        # l.append(dit[key])
-                        if key.encode("utf8") == 'seriesId':
-                            item['serie_id'] = dit[key]
-                        if key.encode("utf8") == 'companyId':
-                            item['company_id'] = dit[key]
-                        if key.encode("utf8") == 'brandId':
-                            item['brand_id'] = dit[key]
-                        if key.encode("utf8") == 'seriesName':
-                            item['serie_name_cn'] = dit[key]
-                        if key.encode("utf8") == 'englishName':
-                            item['serie_name_en'] = dit[key]
-                            en_name = dit[key].encode("utf8")
-                            ser_url = "http://auto.chexun.com/%s/data" % (en_name)
-                            item['serie_url'] = ser_url
-
-
-                        # 增量判断 表中是否有重复数据（表中serie_id唯一）
-                            key = str(item['serie_id']).decode('gb2312')
-                            if key not in self.sql_id_list:
-                                item['serie_id'] = str(item['serie_id'])
-                                yield item
-
-            else:
-
-                if key.encode("utf8") == 'seriesId':
-                    item['serie_id'] = dit[key]
-                if key.encode("utf8") == 'seriesName':
-                    item['serie_name_cn'] = dit[key].encode('utf-8')
-                if key.encode("utf8") == 'englishName':
-                    item['serie_name_en'] = dit[key].encode('utf-8')
-                    en_name = dit[key].encode("utf8")
-                    ser_url = "http://auto.chexun.com/%s/data" % (en_name)
-                    item['serie_url'] = ser_url
-                if key.encode("utf8") == 'brandId':
-                    item['brand_id'] = dit[key]
-                if key.encode("utf8") == 'companyId':
-                    item['company_id'] = dit[key]
+                    item['serie_id'] = str(dit['seriesId'])
+                    item['company_id'] = dit['companyId']
+                    item['brand_id'] = dit['brandId']
+                    item['serie_name_cn'] = dit['seriesName']
+                    item['serie_name_en'] = dit['englishName']
+                    item['serie_url'] = "http://auto.chexun.com/%s/data" % (item['serie_name_en'])
                     # 增量判断 表中是否有重复数据（表中serie_id唯一）
-                    key = str(item['serie_id']).decode('gb2312')
+                    key = str(item['serie_id'])
                     if key not in self.sql_id_list:
                         item['serie_id'] = str(item['serie_id'])
                         yield item
+            else:
+                item['serie_id'] = str(dit['seriesId'])
+                item['company_id'] = dit['companyId']
+                item['brand_id'] = dit['brandId']
+                item['serie_name_cn'] = dit['seriesName']
+                item['serie_name_en'] = dit['englishName']
+                item['serie_url'] = "http://auto.chexun.com/%s/data" % (item['serie_name_en'])
+                # 增量判断 表中是否有重复数据（表中serie_id唯一）
+                key = str(item['serie_id'])
+                if key not in self.sql_id_list:
+                    item['serie_id'] = str(item['serie_id'])
+                    yield item
