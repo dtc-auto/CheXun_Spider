@@ -4,8 +4,8 @@ import re
 import json
 import pymssql
 import pandas as pd
-from settings import *
-from items import ChexunSpiderItem
+from CheXun_Spider.settings import *
+from CheXun_Spider.items import ChexunSpiderItem
 
 class UrlSpiderSpider(scrapy.Spider):
 
